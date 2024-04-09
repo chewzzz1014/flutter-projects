@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'next_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +32,7 @@ class MyAppExtension extends StatefulWidget {
 class _MyAppExtensionState extends State<MyAppExtension> {
   String buttonText = 'Click Me';
   int currentIndex = 0;
+  bool _isClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,40 +42,50 @@ class _MyAppExtensionState extends State<MyAppExtension> {
         backgroundColor: Colors.green,
       ),
       body: Center(
-        child: currentIndex == 0 ? Container(
-          width: double.infinity,
-          height: double.infinity,
-          color: Colors.red,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.red,
+        child: currentIndex == 0
+            ? Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.red,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        foregroundColor: Colors.red,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          buttonText = 'Clicked';
+                        });
+                      },
+                      child: Text(buttonText),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => const NextPage(),
+                          ));
+                        });
+                      },
+                      child: const Text('Next Page'),
+                    ),
+                  ],
                 ),
-                onPressed: () {
+              )
+            : GestureDetector(
+                onTap: () {
                   setState(() {
-                    buttonText = 'Clicked';
+                    _isClicked = !_isClicked;
                   });
                 },
-                child: Text(buttonText),
+                child: _isClicked
+                    ? Image.asset('images/cat_meme.png')
+                    : Image.network('https://i.ytimg.com/vi/6_fNGTGPuVs/mqdefault.jpg'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => const NextPage(),
-                    ));
-                  });
-                },
-                child: const Text('Next Page'),
-              ),
-            ],
-          ),
-        )
-            : Image.asset('images/cat_meme.png'),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -93,17 +105,6 @@ class _MyAppExtensionState extends State<MyAppExtension> {
           });
         },
       ),
-    );
-  }
-}
-
-class NextPage extends StatelessWidget {
-  const NextPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
     );
   }
 }
