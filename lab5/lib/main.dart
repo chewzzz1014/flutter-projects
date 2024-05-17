@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
+import './dashboard.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,9 +18,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyAppExtension(),
-      debugShowCheckedModeBanner: false,
+    return Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: MyAppExtension(),
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              textTheme: GoogleFonts.wellfleetTextTheme(Theme.of(context).textTheme),
+            ),
+          );
+        },
     );
   }
 }
@@ -32,27 +43,6 @@ class _MyAppExtensionState extends State<MyAppExtension> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hello'),
-        centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.settings),
-          )
-        ],
-      ),
-      body: Text('hhffh'),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(label: 'profile', icon: Icon(Icons.account_box)),
-          BottomNavigationBarItem(label: 'home', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'settings', icon: Icon(Icons.settings)),
-        ],
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-      ),
-    );
+    return Dashboard();
   }
 }
