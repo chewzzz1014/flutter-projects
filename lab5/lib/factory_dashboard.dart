@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 
 const kBackgroundColor = Color(0xFF1E1E1E);
@@ -7,7 +9,9 @@ const kTextColor = Color(0xFFFFFFFF);
 const kIconColor = Color(0xFF9E9E9E);
 
 class FactoryDashboard extends StatefulWidget {
-  const FactoryDashboard({super.key});
+  const FactoryDashboard({Key? key, required this.factory}) : super(key: key);
+
+  final Map<String, dynamic> factory;
 
   @override
   State<FactoryDashboard> createState() => _FactoryDashboardState();
@@ -16,6 +20,15 @@ class FactoryDashboard extends StatefulWidget {
 class _FactoryDashboardState extends State<FactoryDashboard> {
   @override
   Widget build(BuildContext context) {
+    String powerConsumption = widget.factory['power_consumption'] == 0
+        ? '⚠️ ABD1234 IS UNREACHABLE !'
+        : '${widget.factory['power_consumption']} kW';
+    double steamPressure = widget.factory['steam_pressure'];
+    double steamFlow = widget.factory['steam_flow'];
+    double waterLevel = widget.factory['water_level'];
+    double powerFreq = widget.factory['power_freq'];
+    String date = widget.factory['date'];
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +36,8 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
         Container(
           height: 65.h,
           width: 90.w,
-          margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width * 0.05),
+          margin: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.width * 0.05),
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             borderRadius: BorderRadius.circular(10.0),
@@ -36,53 +50,76 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
             ],
           ),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text(
-                  'ABD1234 IS UNREACHABLE!',
-                  style: TextStyle(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                flex: 1,
+                child: Text(
+                  powerConsumption,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 22,
                   ),
                 ),
-                Row(
+              ),
+              Flexible(
+                flex: 3,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildMonitorTile(context, 'Steam Pressure', '0.0', 'bar'),
-                    _buildMonitorTile(context, 'Steam Flow', '0.0', 'T/H'),
+                    _buildMonitorTile(context, 'Steam Pressure',
+                        '$steamPressure bar', steamPressure),
+                    _buildMonitorTile(
+                        context, 'Steam Flow', '$steamFlow T/H', steamFlow),
                   ],
                 ),
-                Row(
+              ),
+              Flexible(
+                flex: 3,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildMonitorTile(context, 'Water Level', '0.0', '%'),
-                    _buildMonitorTile(context, 'Power Frequency', '0.0', 'Hz'),
+                    _buildMonitorTile(
+                        context, 'Water Level', '$waterLevel %', waterLevel),
+                    _buildMonitorTile(
+                        context, 'Power Frequency', '$powerFreq Hz', powerFreq),
                   ],
                 ),
-                const Text(
-                  'ABD1234 IS UNREACHABLE!',
-                  style: TextStyle(
+              ),
+              Flexible(
+                flex: 1,
+                child: Text(
+                  date,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildMonitorTile(BuildContext context, String label, String value, String unit) {
+  Widget _buildMonitorTile(
+      BuildContext context, String label, String valueWithUnit, double value) {
+    String imageType = value <= 0
+        ? 'low'
+        : value >= 100
+            ? 'high'
+            : 'medium';
+
     return Container(
-      color: Colors.white,
-      // decoration: Decoration(
-      //     borderRadius: BorderRadius.circular(10.0)
-      // ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.white,
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.04,
-            vertical: MediaQuery.of(context).size.width * 0.03,
+          horizontal: MediaQuery.of(context).size.width * 0.04,
+          vertical: MediaQuery.of(context).size.width * 0.03,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -96,25 +133,16 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
             ),
             Container(
                 width: MediaQuery.of(context).size.width * 0.3,
-                child: Image.asset('images/low_speedometer.png')
-            ),
-            Row(
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Image.asset('images/${imageType}_speedometer.png')),
+            Flexible(
+              flex: 1,
+              child: Text(
+                valueWithUnit,
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  unit,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
