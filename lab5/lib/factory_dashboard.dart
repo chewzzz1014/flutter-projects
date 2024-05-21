@@ -133,7 +133,8 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
             ),
             Container(
                 width: MediaQuery.of(context).size.width * 0.3,
-                child: Image.asset('images/${imageType}_speedometer.png')),
+                child: Image.asset('images/${imageType}_speedometer.png')
+            ),
             Flexible(
               flex: 1,
               child: Text(
