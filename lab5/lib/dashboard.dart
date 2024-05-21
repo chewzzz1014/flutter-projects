@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './factory_dashboard.dart';
 import 'package:intl/intl.dart';
+import 'engineer/engineer_list.dart';
 
 const kBackgroundColor = Color(0xFF1E1E1E);
 const kAccentColor = Color(0xFFFFC107);
@@ -29,6 +30,18 @@ List<Map<String, dynamic>> factories = [
   },
 ];
 
+List<List<Map<String, String>>> engineerList = [
+  [
+    {'Tim' : '109219938'},
+    {'John Doe' : '1234567891'},
+    {'Jeans' : '23058434'},
+  ],
+  [
+    {'Lim' : '14376025'},
+    {'Joseph Kim' : '4968830583'},
+  ],
+];
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -39,6 +52,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int currentFactoryIndex = 0;
   Map<String, dynamic> currentFactory = factories[0];
+  List<Map<String, String>> currentEngineerList = engineerList[0];
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +74,8 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              FactoryDashboard(factory: currentFactory),
+              // FactoryDashboard(factory: currentFactory),
+              EngineerList(factory: currentFactory),
               _buildFactoryButton(context),
             ],
           )),
@@ -97,7 +112,7 @@ class _DashboardState extends State<Dashboard> {
                       setState(() {
                         currentFactoryIndex = index;
                         currentFactory = factories[currentFactoryIndex];
-                        print(currentFactory['date']);
+                        currentEngineerList = engineerList[currentFactoryIndex];
                       });
                     },
                     style: ElevatedButton.styleFrom(

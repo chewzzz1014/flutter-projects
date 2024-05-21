@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 
-class OTP extends StatefulWidget {
-  const OTP({super.key});
+class OTP1 extends StatefulWidget {
+  const OTP1({super.key});
 
   @override
-  State<OTP> createState() => _OTPState();
+  State<OTP1> createState() => _OTP1State();
 }
 
-class _OTPState extends State<OTP> {
+class _OTP1State extends State<OTP1> {
   bool isChecked = false;
 
   @override
@@ -41,7 +41,7 @@ class _OTPState extends State<OTP> {
               ),
               Center(
                 child: Container(
-                  height: 55.h,
+                  height: 45.h,
                   width: 90.w,
                   decoration: BoxDecoration(
                     color: const Color(0xFFFCE4EC),

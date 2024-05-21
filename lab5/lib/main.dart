@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import './dashboard.dart';
-import './otp.dart';
+import './otp/otp_main.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,7 +44,7 @@ class _MyAppExtensionState extends State<MyAppExtension> {
 
   @override
   Widget build(BuildContext context) {
-    // return Dashboard();
-    return OTP();
+    return Dashboard();
+    // return OTPMain();
   }
 }
