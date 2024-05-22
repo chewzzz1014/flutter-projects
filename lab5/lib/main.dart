@@ -19,31 +19,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return Sizer(
-      builder: (context, orientation, deviceType) {
-        return MaterialApp(
-          home: MyAppExtension(),
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            textTheme:
-                GoogleFonts.wellfleetTextTheme(Theme.of(context).textTheme),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class MyAppExtension extends StatefulWidget {
-  const MyAppExtension({super.key});
-
-  @override
-  State<MyAppExtension> createState() => _MyAppExtensionState();
-}
-
-class _MyAppExtensionState extends State<MyAppExtension> {
   List<Map<String, dynamic>> factories = [
     {
       'name': 'Factory 1',
@@ -72,7 +47,8 @@ class _MyAppExtensionState extends State<MyAppExtension> {
       'steam_flow': 22.82,
       'water_level': 55.14,
       'power_freq': 50.08,
-      'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString(),
+      'date':
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString(),
       'engineer_list': [
         {'name': 'Lim', 'phone': '14376025'},
         {'name': 'Joseph Kim', 'phone': '4968830583'},
@@ -80,41 +56,27 @@ class _MyAppExtensionState extends State<MyAppExtension> {
     },
     {
       'name': 'Factory 3',
-      'power_consumption': 0.0,
+      'power_consumption': 1229.50,
       'steam_pressure': 0.0,
-      'steam_flow': 0.0,
+      'steam_flow': 50.68,
       'water_level': 0.0,
-      'power_freq': 0.0,
+      'power_freq': 22.70,
       'date': '--:--',
       'engineer_list': [],
     },
     {
       'name': 'Factory 4',
-      'power_consumption': 1549.7,
+      'power_consumption': 109.70,
       'steam_pressure': 34.19,
-      'steam_flow': 22.82,
-      'water_level': 55.14,
-      'power_freq': 50.08,
-      'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString(),
+      'steam_flow': 30.50,
+      'water_level': 0.0,
+      'power_freq': 0.0,
+      'date':
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString(),
       'engineer_list': [],
     },
   ];
   int currentFactoryIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    // return Dashboard(
-    //   factories: factories,
-    //   currentFactoryIndex: currentFactoryIndex,
-    //   updateCurrentFactory: updateCurrentFactory,
-    // );
-    // return OTPMain();
-    return EngineerForm(
-      factories: factories,
-      currentFactoryIndex: currentFactoryIndex,
-      updateEngineerList: updateEngineerList,
-    );
-  }
 
   void updateCurrentFactory(int index) {
     setState(() {
@@ -129,5 +91,34 @@ class _MyAppExtensionState extends State<MyAppExtension> {
         'phone': phone,
       });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          // home: Dashboard(
+          //   factories: factories,
+          //   currentFactoryIndex: currentFactoryIndex,
+          //   updateCurrentFactory: updateCurrentFactory,
+          // ),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            textTheme:
+                GoogleFonts.wellfleetTextTheme(Theme.of(context).textTheme),
+          ),
+          initialRoute: '/otp',
+          routes: {
+            '/otp': (context) => OTPMain(step: 1),
+            '/': (context) => Dashboard(
+                  factories: factories,
+                  currentFactoryIndex: currentFactoryIndex,
+                  updateCurrentFactory: updateCurrentFactory,
+                )
+          },
+        );
+      },
+    );
   }
 }

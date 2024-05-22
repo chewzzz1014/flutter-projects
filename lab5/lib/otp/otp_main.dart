@@ -4,7 +4,9 @@ import './otp_get_code.dart';
 import './otp_activate.dart';
 
 class OTPMain extends StatefulWidget {
-  const OTPMain({super.key});
+  OTPMain({super.key, required this.step});
+
+  int step;
 
   @override
   State<OTPMain> createState() => _OTPMainState();
@@ -55,9 +57,9 @@ class _OTPMainState extends State<OTPMain> {
                       ),
                     ],
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: OTPActivate(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: widget.step == 1 ? OTPGetCode() : OTPActivate(),
                   ),
                 ),
               ),

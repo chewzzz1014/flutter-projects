@@ -111,7 +111,7 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
       BuildContext context, String label, String valueWithUnit, double value) {
     String imageType = value <= 0
         ? 'low'
-        : value >= 100
+        : value >= 50
             ? 'high'
             : 'medium';
 

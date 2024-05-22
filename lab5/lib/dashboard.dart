@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'engineer/engineer_list.dart';
+import './factory_dashboard.dart';
 
 const kBackgroundColor = Color(0xFF1E1E1E);
 const kAccentColor = Color(0xFFFFC107);
@@ -23,10 +24,13 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  int currentIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           widget.factories[widget.currentFactoryIndex]['name'],
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
@@ -46,20 +50,37 @@ class _DashboardState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // FactoryDashboard(factory: widget.factories[widget.currentFactoryIndex],),
-              EngineerList(
-                currentFactory: widget.factories[widget.currentFactoryIndex],
-              ),
+              (currentIndex == 0
+                  ? EngineerList(
+                      currentFactory:
+                          widget.factories[widget.currentFactoryIndex],
+                    )
+                  : FactoryDashboard(
+                      factory: widget.factories[widget.currentFactoryIndex],
+                    )),
               _buildFactoryButton(context),
             ],
           )),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (int newIndex) {
+          setState(() {
+            currentIndex = newIndex;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
-              label: 'profile', icon: Icon(Icons.account_box)),
-          BottomNavigationBarItem(label: 'home', icon: Icon(Icons.home)),
+            label: 'profile',
+            icon: Icon(Icons.account_box),
+          ),
           BottomNavigationBarItem(
-              label: 'settings', icon: Icon(Icons.settings)),
+            label: 'home',
+            icon: Icon(Icons.home),
+          ),
+          BottomNavigationBarItem(
+            label: 'settings',
+            icon: Icon(Icons.settings),
+          ),
         ],
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -78,10 +99,8 @@ class _DashboardState extends State<Dashboard> {
         children: [
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15.0,
-                vertical: 8.0
-              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.factories.length,
@@ -103,7 +122,8 @@ class _DashboardState extends State<Dashboard> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(Icons.factory, color: kBackgroundColor),
+                              const Icon(Icons.factory,
+                                  color: kBackgroundColor),
                               Text(
                                 widget.factories[index]['name'],
                                 style: const TextStyle(
