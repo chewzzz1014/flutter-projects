@@ -23,22 +23,47 @@ class EngineerForm extends StatefulWidget {
 }
 
 class _EngineerFormState extends State<EngineerForm> {
+  final nameFormKey = GlobalKey<FormState>();
+  final phoneNumberFormKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  bool isValidated = false;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    phoneNumberController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
+  void validateForm() {
+    final nameForm = nameFormKey.currentState;
+    final phoneForm = phoneNumberFormKey.currentState;
+    if (nameForm != null &&
+        phoneForm != null &&
+        nameForm.validate() &&
+        phoneForm.validate()) {
+      setState(() {
+        isValidated = true;
+      });
+    } else {
+      setState(() {
+        isValidated = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
         title: Text(
           widget.factories[widget.currentFactoryIndex]['name'],
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.05),
-            child: const Icon(Icons.settings),
-          )
-        ],
       ),
       body: Container(
           width: 100.w,
@@ -58,24 +83,30 @@ class _EngineerFormState extends State<EngineerForm> {
                   'Invite users',
                   style: TextStyle(fontSize: 18),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           "Owner's name",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(),
-                          hintText: 'Type here',
+                      Form(
+                        key: nameFormKey,
+                        child: TextFormField(
+                          controller: nameController,
+                          validator: (value) => validateNameInput(value),
+                          decoration: const InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            border: OutlineInputBorder(),
+                            hintText: 'Type here',
+                          ),
+                          onChanged: (value) => validateForm(),
                         ),
                       ),
                     ],
@@ -112,14 +143,21 @@ class _EngineerFormState extends State<EngineerForm> {
                                 ],
                               ),
                             ),
-                            const Flexible(
+                            Flexible(
                               flex: 2,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter your phone number',
+                              child: Form(
+                                key: phoneNumberFormKey,
+                                child: TextFormField(
+                                  controller: phoneNumberController,
+                                  validator: (value) =>
+                                      validatePhoneNumberInput(value),
+                                  decoration: const InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Enter your phone number',
+                                  ),
+                                  onChanged: (value) => validateForm(),
                                 ),
                               ),
                             ),
@@ -134,7 +172,12 @@ class _EngineerFormState extends State<EngineerForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: isValidated
+                          ? () {
+                              widget.updateEngineerList(nameController.text, phoneNumberController.text);
+                              Navigator.pop(context);
+                            }
+                          : null,
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
@@ -151,5 +194,31 @@ class _EngineerFormState extends State<EngineerForm> {
             ),
           )),
     );
+  }
+
+  String? validatePhoneNumberInput(String? phoneNumber) {
+    if (phoneNumber == null || phoneNumber.isEmpty) {
+      return 'Phone number is required';
+    }
+    bool isNumeric = RegExp(r'^[0-9]+$').hasMatch(phoneNumber);
+    bool isCorrectLength = phoneNumber.length == 9 || phoneNumber.length == 10;
+    if (!isNumeric) {
+      return 'Phone number must be numeric';
+    }
+    if (!isCorrectLength) {
+      return 'Must be 9 or 10 digits long';
+    }
+    return null;
+  }
+
+  String? validateNameInput(String? name) {
+    if (name == null || name.isEmpty) {
+      return 'Name is required';
+    }
+    bool isCorrectLength = name.length >= 3;
+    if (!isCorrectLength) {
+      return 'Name must be 3 digits or longer';
+    }
+    return null;
   }
 }

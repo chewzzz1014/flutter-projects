@@ -108,23 +108,24 @@ class _OTPGetCodeState extends State<OTPGetCode> {
           ],
         ),
         ElevatedButton(
-            onPressed: isValidated
-                ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OTPMain(step: 2),
-                      ),
-                    );
-                  }
-                : null,
-            child: const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                'Get Activation Code',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            )),
+          onPressed: isValidated
+              ? () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OTPMain(step: 2),
+                    ),
+                  );
+                }
+              : null,
+          child: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              'Get Activation Code',
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+        ),
       ],
     );
   }

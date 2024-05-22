@@ -89,9 +89,6 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget _buildFactoryButton(BuildContext context) {
-    double currentWidth = MediaQuery.of(context).size.width;
-    double currentHeight = MediaQuery.of(context).size.height;
-
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -116,6 +113,10 @@ class _DashboardState extends State<Dashboard> {
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(
+                                  color: (widget.currentFactoryIndex == index
+                                      ? Colors.blue
+                                      : Colors.transparent)),
                             ),
                           ),
                           child: Column(

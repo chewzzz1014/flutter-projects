@@ -25,27 +25,57 @@ class _EngineerListState extends State<EngineerList> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          height: 65.h,
-          width: 90.w,
-          margin: EdgeInsets.only(
-            top: MediaQuery.of(context).size.width * 0.05,
-          ),
-          decoration: BoxDecoration(
-            color: const Color(0xFFEEEEEE),
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 4.0,
-                offset: const Offset(0, 2),
+        Stack(
+          children: [
+            Container(
+              height: 65.h,
+              width: 90.w,
+              margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.width * 0.05,
               ),
-            ],
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(15.0),
-            child: _buildEngineerCard(widget.currentFactory),
-          ),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEEEEEE),
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4.0,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(15.0),
+                child: _buildEngineerCard(widget.currentFactory),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/addEngineer');
+                },
+                style: ButtonStyle(
+                  shadowColor: MaterialStateProperty.all<Color>(Colors.grey),
+                  elevation: MaterialStateProperty.all<double>(5.0),
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.add,
+                  size: 30.0,
+                  weight: 12.0,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -107,7 +137,8 @@ class _EngineerListState extends State<EngineerList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        currentFactory['engineer_list'][index]['name'] ?? 'name',
+                        currentFactory['engineer_list'][index]['name'] ??
+                            'name',
                         style: const TextStyle(
                           fontSize: 18,
                         ),

@@ -115,7 +115,12 @@ class _MyAppState extends State<MyApp> {
                   factories: factories,
                   currentFactoryIndex: currentFactoryIndex,
                   updateCurrentFactory: updateCurrentFactory,
-                )
+                ),
+            '/addEngineer': (context) => EngineerForm(
+                  factories: factories,
+                  currentFactoryIndex: currentFactoryIndex,
+                  updateEngineerList: updateEngineerList,
+                ),
           },
         );
       },
