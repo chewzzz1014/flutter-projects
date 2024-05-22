@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 class OTPGetCode extends StatefulWidget {
   const OTPGetCode({super.key});

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import './dashboard.dart';
 import './otp/otp_main.dart';
+import './engineer/add_engineer.dart';
 
 void main() {
   runApp(MyApp());
@@ -102,17 +103,31 @@ class _MyAppExtensionState extends State<MyAppExtension> {
 
   @override
   Widget build(BuildContext context) {
-    return Dashboard(
+    // return Dashboard(
+    //   factories: factories,
+    //   currentFactoryIndex: currentFactoryIndex,
+    //   updateCurrentFactory: updateCurrentFactory,
+    // );
+    // return OTPMain();
+    return EngineerForm(
       factories: factories,
       currentFactoryIndex: currentFactoryIndex,
-      updateCurrentFactory: updateCurrentFactory,
+      updateEngineerList: updateEngineerList,
     );
-    // return OTPMain();
   }
 
   void updateCurrentFactory(int index) {
     setState(() {
       currentFactoryIndex = index;
+    });
+  }
+
+  void updateEngineerList(String name, String phone) {
+    setState(() {
+      factories[currentFactoryIndex]['engineer_list'].add({
+        'name': name,
+        'phone': phone,
+      });
     });
   }
 }

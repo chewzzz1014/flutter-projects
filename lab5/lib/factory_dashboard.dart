@@ -43,7 +43,7 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
             top: MediaQuery.of(context).size.width * 0.05,
           ),
           decoration: BoxDecoration(
-            color: Color(0xFFEEEEEE),
+            color: const Color(0xFFEEEEEE),
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
