@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'engineer/engineer_list.dart';
 import './factory_dashboard.dart';
+import './notification_settings.dart';
 
 const kBackgroundColor = Color(0xFF1E1E1E);
 const kAccentColor = Color(0xFFFFC107);
@@ -55,9 +56,13 @@ class _DashboardState extends State<Dashboard> {
                       currentFactory:
                           widget.factories[widget.currentFactoryIndex],
                     )
-                  : FactoryDashboard(
-                      factory: widget.factories[widget.currentFactoryIndex],
-                    )),
+                  : currentIndex == 1
+                      ? FactoryDashboard(
+                          factory: widget.factories[widget.currentFactoryIndex],
+                        )
+                      : NotificationSettings(
+                          factory: widget.factories[widget.currentFactoryIndex],
+                        )),
               _buildFactoryButton(context),
             ],
           )),
