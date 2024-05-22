@@ -9,7 +9,10 @@ const kTextColor = Color(0xFFFFFFFF);
 const kIconColor = Color(0xFF9E9E9E);
 
 class FactoryDashboard extends StatefulWidget {
-  const FactoryDashboard({Key? key, required this.factory}) : super(key: key);
+  const FactoryDashboard({
+    Key? key,
+    required this.factory,
+  }) : super(key: key);
 
   final Map<String, dynamic> factory;
 
@@ -36,8 +39,9 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
         Container(
           height: 65.h,
           width: 90.w,
-          margin: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.width * 0.05),
+          margin: EdgeInsets.only(
+            top: MediaQuery.of(context).size.width * 0.05,
+          ),
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             borderRadius: BorderRadius.circular(10.0),
@@ -133,8 +137,7 @@ class _FactoryDashboardState extends State<FactoryDashboard> {
             ),
             Container(
                 width: MediaQuery.of(context).size.width * 0.3,
-                child: Image.asset('images/${imageType}_speedometer.png')
-            ),
+                child: Image.asset('images/${imageType}_speedometer.png')),
             Flexible(
               flex: 1,
               child: Text(

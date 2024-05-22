@@ -7,9 +7,12 @@ const kTextColor = Color(0xFFFFFFFF);
 const kIconColor = Color(0xFF9E9E9E);
 
 class EngineerList extends StatefulWidget {
-  const EngineerList({Key? key, required this.factory}) : super(key: key);
+  const EngineerList({
+    Key? key,
+    required this.currentFactory,
+  }) : super(key: key);
 
-  final Map<String, dynamic> factory;
+  final Map<String, dynamic> currentFactory;
 
   @override
   State<EngineerList> createState() => _EngineerListState();
@@ -18,15 +21,6 @@ class EngineerList extends StatefulWidget {
 class _EngineerListState extends State<EngineerList> {
   @override
   Widget build(BuildContext context) {
-    String powerConsumption = widget.factory['power_consumption'] == 0
-        ? '⚠️ ABD1234 IS UNREACHABLE !'
-        : '${widget.factory['power_consumption']} kW';
-    double steamPressure = widget.factory['steam_pressure'];
-    double steamFlow = widget.factory['steam_flow'];
-    double waterLevel = widget.factory['water_level'];
-    double powerFreq = widget.factory['power_freq'];
-    String date = widget.factory['date'];
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,10 +28,11 @@ class _EngineerListState extends State<EngineerList> {
         Container(
           height: 65.h,
           width: 90.w,
-          margin: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.width * 0.05),
+          margin: EdgeInsets.only(
+            top: MediaQuery.of(context).size.width * 0.05,
+          ),
           decoration: BoxDecoration(
-            color: Color(0xFFEEEEEE),
+            color: const Color(0xFFEEEEEE),
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -47,105 +42,90 @@ class _EngineerListState extends State<EngineerList> {
               ),
             ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Flexible(
-                flex: 1,
-                child: Text(
-                  powerConsumption,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildMonitorTile(context, 'Steam Pressure',
-                        '$steamPressure bar', steamPressure),
-                    _buildMonitorTile(
-                        context, 'Steam Flow', '$steamFlow T/H', steamFlow),
-                  ],
-                ),
-              ),
-              Flexible(
-                flex: 3,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildMonitorTile(
-                        context, 'Water Level', '$waterLevel %', waterLevel),
-                    _buildMonitorTile(
-                        context, 'Power Frequency', '$powerFreq Hz', powerFreq),
-                  ],
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Text(
-                  date,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+          child: Container(
+            padding: const EdgeInsets.all(15.0),
+            child: _buildEngineerCard(widget.currentFactory),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildMonitorTile(
-      BuildContext context, String label, String valueWithUnit, double value) {
-    String imageType = value <= 0
-        ? 'low'
-        : value >= 100
-        ? 'high'
-        : 'medium';
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.04,
-          vertical: MediaQuery.of(context).size.width * 0.03,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  Widget _buildEngineerCard(Map<String, dynamic> currentFactory) {
+    if (currentFactory['engineer_list'].length == 0) {
+      return Container(
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              label,
-              style: const TextStyle(
-                fontSize: 15.0,
-              ),
-            ),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: Image.asset('images/${imageType}_speedometer.png')
-            ),
-            Flexible(
-              flex: 1,
-              child: Text(
-                valueWithUnit,
-                style: const TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
+              'No Engineer Available',
+              style: TextStyle(
+                color: kBackgroundColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
           ],
         ),
-      ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: currentFactory['engineer_list'].length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 20.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4.0,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      size: 10.0,
+                      color: Color(0xFF757575),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        currentFactory['engineer_list'][index]['name'] ?? 'name',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        '+60${currentFactory['engineer_list'][index]['phone'] ?? 'phone'}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
