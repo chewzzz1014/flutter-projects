@@ -28,8 +28,8 @@ class PokemonImageWidget extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             color: Colors.orange,
-            image: const DecorationImage(
-              image: AssetImage('assets/images/mapp.png'),
+            image: DecorationImage(
+              image: FileImage(File(pokemonImageEntity.path)),
             ),
           ),
           child: child,
